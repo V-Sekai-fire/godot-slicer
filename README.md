@@ -41,7 +41,7 @@ func cut(plane_origin: Vector3, plane_normal: Vector3):
 
     if not sliced:
         print("No slice occurred")
-    
+
     if sliced.upper_mesh:
         print("Instantiate the upper cut mesh somewhere")
 

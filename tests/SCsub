@@ -13,7 +13,7 @@ def run_target(target, source, env):
     return subprocess.call(target[0].abspath)
 
 # Our unit tests make use of the OS_Server class (which is unfortunately Unix only)
-# for bootstraping the Godot environment before running tests. This is essentially
+# for bootstrapping the Godot environment before running tests. This is essentially
 # just copy-and-pasted from `platform/server/SCsub` and for that reason runs a high
 # risk of falling out of sync.
 def os_server_sources():
@@ -77,7 +77,7 @@ def configure_unit_tests():
             env.Append(LINKFLAGS=['-Wl,-force_load', test_lib[0].abspath])
         else:
             # This has not been tested on a GNU/linux compiler but this _should_
-            # be the equivelant as the above `force_load`
+            # be the equivalent as the above `force_load`
             env.Append(LINKFLAGS=['-Wl,--whole-archive', test_lib[0].abspath, '-Wl,--no-whole-archive'])
 
         # TODO - Updating the main SCons environment with our test build is not smart. It actually
@@ -100,7 +100,7 @@ def configure_unit_tests():
 
     # Useful so we can more easily attach an IDE's debugger to the build process
     if ARGUMENTS.get('skip_running_tests', 'no') == 'no':
-        # Passing in a function to `AddPostAction` is slightly more preferrable
+        # Passing in a function to `AddPostAction` is slightly more preferable
         # to just passing in test[0].abspath, as the latter runs the risk
         # of causing cyclical dependency issues if you start playing around
         # with the `skip_running_tests` flag. Using a function as an
