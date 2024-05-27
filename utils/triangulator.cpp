@@ -29,6 +29,7 @@
 /**************************************************************************/
 
 #include "triangulator.h"
+
 #include <algorithm>
 #include <limits>
 
@@ -71,12 +72,12 @@ real_t tri_area_2d(real_t x1, real_t y1, real_t x2, real_t y2, real_t x3, real_t
 // But as this is primarily a learning exercise (and because monotone chain has a slightly different time complexity
 // and our need to support uv mappings and such) let's try to implement this ourselves (or, more accurately, copy
 // it over from Ezy-Slice)
-PoolVector<SlicerFace> monotone_chain(const PoolVector<Vector3> &interception_points, Vector3 plane_normal) {
+Vector<SlicerFace> monotone_chain(const Vector<Vector3> &interception_points, Vector3 plane_normal) {
 	// We'll be using the monotone_chain algorithm to try to get a convex hull from our assortment of
 	// interception_points along our plane
 
 	int count = interception_points.size();
-	PoolVector<SlicerFace> result;
+	Vector<SlicerFace> result;
 
 	if (count < 3) {
 		return result;
@@ -118,9 +119,8 @@ PoolVector<SlicerFace> monotone_chain(const PoolVector<Vector3> &interception_po
 	mapped.sort_custom<Mapped2D::Comparator>();
 
 	// Our final hull mappings will end up in here
-	PoolVector<Mapped2D> hulls;
+	Vector<Mapped2D> hulls;
 	hulls.resize(count + 1);
-	PoolVector<Mapped2D>::Write hulls_writer = hulls.write();
 
 	int k = 0;
 
@@ -138,7 +138,7 @@ PoolVector<SlicerFace> monotone_chain(const PoolVector<Vector3> &interception_po
 			k--;
 		}
 
-		hulls_writer[k++] = mapped[i];
+		hulls.write[k++] = mapped[i];
 	}
 
 	// Build the upper hull of the chain
@@ -155,7 +155,7 @@ PoolVector<SlicerFace> monotone_chain(const PoolVector<Vector3> &interception_po
 			k--;
 		}
 
-		hulls_writer[k++] = mapped[i];
+		hulls.write[k++] = mapped[i];
 	}
 
 	// Finally we can build our mesh. Generate all the variables
@@ -169,7 +169,6 @@ PoolVector<SlicerFace> monotone_chain(const PoolVector<Vector3> &interception_po
 	}
 
 	result.resize(tri_count / 3);
-	PoolVector<SlicerFace>::Write result_writer = result.write();
 
 	float width = max_div_x - min_div_x;
 	float height = max_div_y - min_div_y;
@@ -207,11 +206,10 @@ PoolVector<SlicerFace> monotone_chain(const PoolVector<Vector3> &interception_po
 		new_face.set_normals(plane_normal, plane_normal, plane_normal);
 		new_face.compute_tangents();
 
-		result_writer[i / 3] = new_face;
+		result.write[i / 3] = new_face;
 
 		index_count++;
 	}
-	result_writer.release();
 
 	return result;
 }

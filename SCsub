@@ -42,15 +42,5 @@ def configure_shared_lib_build():
     env.Append(LIBS=[shared_lib])
     env.Append(LIBPATH=['#bin'])
 
-# Build the plugin statically for more reliable builds
-def configure_static_build():
-    module_env.Append(CCFLAGS=['-O2'])
-    module_env.add_source_files(env.modules_sources, sources)
-
-if use_shared_libs:
-    configure_shared_lib_build()
-else:
-    configure_static_build()
-
-if ARGUMENTS.get('slicer_tests', 'no') == 'yes':
-    SConscript("tests/SCsub")
+module_env.Append(CCFLAGS=['-O2'])
+module_env.add_source_files(env.modules_sources, sources)

@@ -28,14 +28,13 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "register_types.h"
-
-#include "core/class_db.h"
 #include "slicer.h"
 
+#include "register_types.h"
+
 void initialize_slicer_module(ModuleInitializationLevel p_level) {
-	ClassDB::register_class<Slicer>();
-	ClassDB::register_class<SlicedMesh>();
+	GDREGISTER_CLASS(Slicer);
+	GDREGISTER_CLASS(SlicedMesh);
 }
 
 void uninitialize_slicer_module(ModuleInitializationLevel p_level) {

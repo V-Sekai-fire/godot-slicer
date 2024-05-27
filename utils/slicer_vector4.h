@@ -31,8 +31,8 @@
 #ifndef SLICER_VECTOR4_H
 #define SLICER_VECTOR4_H
 
-#include "core/math/math_funcs.h"
-#include "core/ustring.h"
+#include "core/math/math_defs.h"
+#include "core/string/ustring.h"
 
 /**
  * Godot does not currently have a 4 dimensional Vector class so we just

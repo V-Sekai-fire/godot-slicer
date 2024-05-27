@@ -11,16 +11,6 @@ doc/_build/
 # CLion
 cmake-build-debug
 
-# Android specific
-.gradle
-local.properties
-*.iml
-.idea
-.gradletasknamecache
-project.properties
-platform/android/java/libs/*
-platform/android/java/assets
-
 # General c++ generated files
 *.lib
 *.o
@@ -343,6 +333,3 @@ platform/windows/godot_res.res
 
 # compile commands (https://clang.llvm.org/docs/JSONCompilationDatabase.html)
 compile_commands.json
-
-# Cppcheck
-*.cppcheck

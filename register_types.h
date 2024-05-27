@@ -31,6 +31,8 @@
 #ifndef SLICER_REGISTER_TYPES_H
 #define SLICER_REGISTER_TYPES_H
 
+#include "modules/register_module_types.h"
+
 void initialize_slicer_module(ModuleInitializationLevel p_level);
 void uninitialize_slicer_module(ModuleInitializationLevel p_level);
 

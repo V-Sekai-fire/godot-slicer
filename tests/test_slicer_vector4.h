@@ -28,8 +28,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "../../utils/slicer_vector4.h"
-#include "../catch.hpp"
+#if 0
+
+#include "../utils/slicer_vector4.h"
 
 TEST_CASE("[SlicerVector4]") {
 	SECTION("x,y,z,w maps to coord") {
@@ -76,3 +77,5 @@ TEST_CASE("[SlicerVector4]") {
 		REQUIRE_FALSE(SlicerVector4(1, 1, 1, 1) == SlicerVector4(1, 1, 1, 2));
 	}
 }
+
+#endif

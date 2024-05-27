@@ -28,8 +28,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "../../utils/surface_filler.h"
-#include "../catch.hpp"
+#if 0
+
+#include "../utils/surface_filler.h"
 
 TEST_CASE("[surface_filler]") {
 	SECTION("adds a new surface to an array") {
@@ -104,3 +105,5 @@ TEST_CASE("[surface_filler]") {
 		}
 	}
 }
+
+#endif

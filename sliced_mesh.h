@@ -31,8 +31,9 @@
 #ifndef SLICED_MESH_H
 #define SLICED_MESH_H
 
-#include "core/resource.h"
+#include "core/io/resource.h"
 #include "scene/resources/mesh.h"
+
 #include "utils/intersector.h"
 
 /**
@@ -74,9 +75,7 @@ public:
 	 * Transforms a vector of split results and a vector of faces representing
 	 * the cross section of a slice and creates an upper and lower mesh from them
 	 */
-	SlicedMesh(const PoolVector<Intersector::SplitResult> &surface_splits, const PoolVector<SlicerFace> &cross_section_faces, Ref<Material> cross_section_material);
-
-	SlicedMesh() {}
+	SlicedMesh(const Vector<Intersector::SplitResult> &surface_splits, const Vector<SlicerFace> &cross_section_faces, Ref<Material> cross_section_material);
 };
 
 #endif // SLICED_MESH_H

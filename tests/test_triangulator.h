@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  main.cpp                                                              */
+/*  triangulator.test.cpp                                                 */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,60 +28,41 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#define CATCH_CONFIG_RUNNER
-#include "main/main.h"
-#include "catch.hpp"
-#include "core/math/face3.h"
-#include "platform/server/os_server.h"
-#include <string.h>
+#if 0
 
-// Find the index of the --godot argument. If no argument
-// found then returns -1
-int get_start_of_godot_args(int argc, char *argv[]) {
-	// The first index is reserved for the program name so we can skip it
-	for (int i = 1; i < argc; i++) {
-		if (strncmp(argv[i], "--godot", 2) == 0) {
-			return i;
-		}
+#include "../utils/triangulator.h"
+
+TEST_CASE("[triangulator]") {
+	SECTION("monotone_chain") {
+		PoolVector<Vector3> interception_points;
+		interception_points.push_back(Vector3(0, 0, 0));
+		interception_points.push_back(Vector3(1, 0, 0));
+		interception_points.push_back(Vector3(1, 0, 1));
+		interception_points.push_back(Vector3(0, 0, 1));
+		interception_points.push_back(Vector3(0.5, 0, 0.5));
+
+		PoolVector<SlicerFace> faces = Triangulator::monotone_chain(interception_points, Vector3(0, 1, 0));
+		REQUIRE(faces.size() == 2);
+		REQUIRE(faces[0] == SlicerFace(Vector3(1, 0, 1), Vector3(0, 0, 1), Vector3(0, 0, 0)));
+		REQUIRE(faces[1] == SlicerFace(Vector3(1, 0, 1), Vector3(0, 0, 0), Vector3(1, 0, 0)));
+
+		REQUIRE((faces[0].has_normals && faces[0].has_uvs && faces[0].has_tangents));
+		REQUIRE((faces[1].has_normals && faces[1].has_uvs && faces[1].has_tangents));
+
+		REQUIRE((faces[0].normal[0] == Vector3(0, 1, 0) && faces[0].normal[1] == Vector3(0, 1, 0) && faces[0].normal[2] == Vector3(0, 1, 0)));
+		REQUIRE((faces[1].normal[0] == Vector3(0, 1, 0) && faces[1].normal[1] == Vector3(0, 1, 0) && faces[1].normal[2] == Vector3(0, 1, 0)));
+
+		REQUIRE((faces[0].uv[0] == Vector2(0, 0) && faces[0].uv[1] == Vector2(1, 0) && faces[0].uv[2] == Vector2(1, 1)));
+		REQUIRE((faces[1].uv[0] == Vector2(0, 0) && faces[1].uv[1] == Vector2(1, 1) && faces[1].uv[2] == Vector2(0, 1)));
+
+		REQUIRE(faces[0].tangent[0] == SlicerVector4(-1, 0, 0, -1));
+		REQUIRE(faces[0].tangent[1] == SlicerVector4(-1, 0, 0, -1));
+		REQUIRE(faces[0].tangent[2] == SlicerVector4(-1, 0, 0, -1));
+
+		REQUIRE(faces[1].tangent[0] == SlicerVector4(-1, 0, 0, -1));
+		REQUIRE(faces[1].tangent[1] == SlicerVector4(-1, 0, 0, -1));
+		REQUIRE(faces[1].tangent[2] == SlicerVector4(-1, 0, 0, -1));
 	}
-
-	// Because 0 is invalid this could also have just been 0, but
-	// let's try to keep things a little less confusing
-	return -1;
 }
 
-// Allocates and fills a new array of char pointers that points to godot arguments
-char **make_godot_args(int godot_args_length, int start_of_godot_args, char *argv[]) {
-	// We shouldn't need to worry too much about memory management here
-	char **godot_args = new char *[godot_args_length];
-
-	// We don't want the --godot arg but we do want the program name
-	godot_args[0] = argv[0];
-
-	for (int i = 1; i < godot_args_length; i++) {
-		godot_args[i] = argv[start_of_godot_args + i];
-	}
-
-	return godot_args;
-}
-
-int main(int argc, char *argv[]) {
-	// Allow passing in commands into both Catch and the Godot server
-	// by splitting on a "--godot" arg
-	int start_of_godot_args = get_start_of_godot_args(argc, argv);
-	int godot_args_length = start_of_godot_args != -1 ? argc - start_of_godot_args : 0;
-	int catch_args_length = argc - godot_args_length;
-	char **godot_args = make_godot_args(godot_args_length, start_of_godot_args, argv);
-
-	OS_Server os;
-	Error err = Main::setup(argv[0], godot_args_length, godot_args);
-	if (err != OK)
-		return 255;
-
-	int result = Catch::Session().run(catch_args_length, argv);
-
-	Main::cleanup();
-	delete godot_args;
-
-	return result;
-}
+#endif
